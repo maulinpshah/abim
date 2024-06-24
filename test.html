@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>BoardGPT</title>
+    <script src="gpt.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", async function () {
+        await createResponse(
+          "A 77 year old man who lives in a nursing home presents with a pressure ulcer with exposed bone. What is the next thing to do?",
+          "A. Bone bipsy B. Wound culture C. Antibiotics D. Observe",
+          document.getElementById("content")
+        );
+      });
+    </script>
+    <style>
+      body {
+        font-size: 12pt;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="ask">Ask GPT</button>
+
+    <div id="content"></div>
+  </body>
+</html>

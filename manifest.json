@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "BoardGPT",
+  "description": "Ask GPT about your board questions",
+  "version": "1",
+  "author": "Maulin Shah, MD",
+
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+
+  "host_permissions": ["*://*/*"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "permissions": ["tabs", "sidePanel"],
+  "action": {
+    "default_title": "BoardGPT"
+  },
+  "background": {
+    "service_worker": "service-worker.js"
+  }
+}
