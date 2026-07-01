@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>BoardGPT — Settings</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 14px;
+        color: #1a1a1a;
+        max-width: 640px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        font-size: 22px;
+        margin-bottom: 4px;
+      }
+      h2 {
+        font-size: 16px;
+        margin: 32px 0 4px;
+        border-top: 1px solid #eee;
+        padding-top: 24px;
+      }
+      .subtitle {
+        color: #666;
+        margin-top: 0;
+      }
+      label {
+        display: block;
+        font-weight: 600;
+        margin: 18px 0 6px;
+      }
+      input[type="text"],
+      input[type="password"],
+      select,
+      textarea {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 9px 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-family: inherit;
+      }
+      textarea {
+        min-height: 260px;
+        font-family: ui-monospace, Menlo, Consolas, monospace;
+        font-size: 12.5px;
+        line-height: 1.45;
+        white-space: pre;
+      }
+      .hint {
+        color: #666;
+        font-size: 12px;
+        margin-top: 6px;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 16px;
+      }
+      button {
+        padding: 9px 16px;
+        font-size: 14px;
+        border: none;
+        border-radius: 6px;
+        background: #0b5fff;
+        color: #fff;
+        cursor: pointer;
+      }
+      button.secondary {
+        background: #e9e9ec;
+        color: #1a1a1a;
+      }
+      #status,
+      #fbStatus {
+        font-size: 13px;
+      }
+      .ok {
+        color: #138000;
+      }
+      .err {
+        color: #c00;
+      }
+      a {
+        color: #0b5fff;
+      }
+      .note {
+        margin-top: 12px;
+        padding: 12px 14px;
+        background: #fff8e1;
+        border: 1px solid #ffe082;
+        border-radius: 6px;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>BoardGPT Settings</h1>
+    <p class="subtitle">Your key is stored locally in this browser and is only sent to OpenAI.</p>
+
+    <label for="apiKey">OpenAI API key</label>
+    <input type="password" id="apiKey" placeholder="sk-..." autocomplete="off" spellcheck="false" />
+    <div class="hint">
+      Create one at
+      <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener"
+        >platform.openai.com/api-keys</a
+      >. <a href="#" id="toggleReveal">Show</a>
+    </div>
+
+    <label for="model">Model</label>
+    <select id="model">
+      <option value="gpt-4o">gpt-4o (recommended)</option>
+      <option value="gpt-4o-mini">gpt-4o-mini (cheaper, faster)</option>
+      <option value="gpt-4-turbo">gpt-4-turbo</option>
+      <option value="gpt-4.1">gpt-4.1</option>
+    </select>
+    <div class="hint">Any chat-completions model your key can access.</div>
+
+    <label for="systemPrompt">System prompt</label>
+    <textarea id="systemPrompt" spellcheck="false"></textarea>
+    <div class="hint">
+      This drives how GPT reasons and answers. Edit it, save, and re-test against your
+      logged misses below. <a href="#" id="resetPrompt">Reset to default</a>
+    </div>
+
+    <div class="row">
+      <button id="save">Save</button>
+      <button id="test" class="secondary">Test key</button>
+      <span id="status"></span>
+    </div>
+
+    <h2>Feedback log</h2>
+    <p class="hint" style="margin-top: 8px">
+      Misses you flag in the side panel are stored here so you can analyze why the prompt
+      underperforms. Each record includes the question, GPT's pick &amp; confidence, the
+      correct answer, your notes, the model, and a hash of the prompt used.
+    </p>
+    <div class="row">
+      <span id="fbCount">0 records</span>
+    </div>
+    <div class="row">
+      <button id="exportJson" class="secondary">Export JSON</button>
+      <button id="exportCsv" class="secondary">Export CSV</button>
+      <button id="clearLog" class="secondary">Clear log…</button>
+      <span id="fbStatus"></span>
+    </div>
+
+    <div class="note">
+      <strong>Security note:</strong> anyone with access to this browser profile can read
+      your key and the logged questions. The log may contain exam content — keep exports
+      private. Use an API key with a spending limit and revoke it if it is ever exposed.
+    </div>
+
+    <script src="gpt.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>

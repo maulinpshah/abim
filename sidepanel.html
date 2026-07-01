@@ -1,19 +1,182 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8" />
     <title>BoardGPT</title>
-    <script src="gpt.js"></script>
-    <script src="sidepanel.js"></script>
     <style>
       body {
         font-size: 12pt;
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 12px;
+        color: #1a1a1a;
+      }
+      .toolbar {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+      button {
+        padding: 8px 14px;
+        font-size: 13px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      #ask {
+        background: #0b5fff;
+        color: #fff;
+      }
+      #ask:disabled {
+        opacity: 0.6;
+        cursor: default;
+      }
+      .link-btn {
+        background: transparent;
+        color: #0b5fff;
+        padding: 8px 4px;
+      }
+      #status {
+        font-size: 12px;
+        color: #666;
+        min-height: 16px;
+      }
+      #status.err {
+        color: #c00;
+      }
+      .card {
+        border: 1px solid #e3e3e6;
+        border-radius: 8px;
+        padding: 10px 12px;
+        margin: 10px 0;
+      }
+      #question {
+        white-space: pre-wrap;
+        font-size: 11pt;
+        background: #f7f7f9;
+      }
+      #question .label {
+        font-weight: 700;
+        color: #444;
+        display: block;
+        margin-bottom: 4px;
+      }
+      #pick {
+        display: none;
+        font-weight: 700;
+        background: #e7f5e9;
+        border-color: #b6e0bf;
+        color: #11631f;
+      }
+      .transcript {
+        line-height: 1.45;
+      }
+      .answer h2 {
+        font-size: 15px;
+        margin: 14px 0 4px;
+      }
+      .answer .gpt-pick {
+        font-weight: 700;
+        color: #11631f;
+      }
+      .followup-q {
+        font-weight: 600;
+        margin: 16px 0 2px;
+        color: #1a3e72;
+      }
+      .followup-row {
+        display: none;
+        gap: 6px;
+        margin-top: 12px;
+      }
+      .followup-row textarea {
+        flex: 1;
+        resize: vertical;
+        min-height: 38px;
+        padding: 8px;
+        font: inherit;
+        font-size: 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+      }
+      #followupSend {
+        background: #0b5fff;
+        color: #fff;
+        align-self: flex-end;
+      }
+      #feedbackRow {
+        display: none;
+        margin-top: 12px;
+        font-size: 12px;
+        color: #555;
+      }
+      #feedbackRow .fb-btn {
+        font-size: 12px;
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        background: #fff;
+        margin-left: 6px;
+      }
+      #fbWrong {
+        color: #c00;
+      }
+      #fbCorrect {
+        color: #11631f;
+      }
+      #fbDetail {
+        display: none;
+        margin-top: 8px;
+      }
+      #fbDetail input {
+        font: inherit;
+        font-size: 12px;
+        padding: 5px 7px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-right: 6px;
+      }
+      #fbCorrectAns {
+        width: 44px;
+        text-transform: uppercase;
+      }
+      #fbNotes {
+        width: 200px;
       }
     </style>
   </head>
   <body>
-    <button id="ask">Ask GPT</button>
+    <div class="toolbar">
+      <button id="ask">Ask GPT</button>
+      <button id="copy" class="link-btn">Copy question</button>
+      <button id="settings" class="link-btn">Settings</button>
+    </div>
+    <div id="status"></div>
 
-    <div id="content"></div>
+    <div id="question" class="card" style="display: none"></div>
+    <div id="pick" class="card"></div>
+
+    <div id="transcript" class="transcript"></div>
+
+    <div class="followup-row" id="followupRow">
+      <textarea
+        id="followupInput"
+        placeholder="Ask a follow-up about these options… (Enter to send)"
+      ></textarea>
+      <button id="followupSend">Send</button>
+    </div>
+
+    <div id="feedbackRow">
+      Was GPT correct?
+      <button class="fb-btn" id="fbCorrect">✓ Yes</button>
+      <button class="fb-btn" id="fbWrong">✗ No</button>
+      <div id="fbDetail">
+        <input id="fbCorrectAns" maxlength="2" placeholder="C" title="Correct answer letter" />
+        <input id="fbNotes" placeholder="notes (optional)" />
+        <button class="fb-btn" id="fbSave">Save miss</button>
+      </div>
+    </div>
+
+    <script src="gpt.js"></script>
+    <script src="sidepanel.js"></script>
   </body>
 </html>
